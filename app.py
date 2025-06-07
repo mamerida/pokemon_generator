@@ -1,10 +1,14 @@
 import streamlit as st
 from components.pokemon_gallery import mostrar_galeria_pokemon_paginada 
 import os
+import pandas as pd
+
 
 
 def main():
     st.set_page_config(page_title="Generador de Pokémon Aleatorios", page_icon="🧬")
+    df = pd.read_csv("data/pokemon.csv")
+    rows = df.to_dict(orient="records")
 
     # Título principal con ícono
     st.title("🧬 Generador de Pokémon Aleatorios")
@@ -40,6 +44,7 @@ def main():
         page_number=st.session_state["page_number"],
         images_per_page=8,
         images_per_row=4,
+        pokemon_rows=rows,
         lang_dict=lang_dict,
     )
 
