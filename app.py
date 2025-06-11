@@ -2,8 +2,13 @@ import streamlit as st
 from components.pokemon_gallery import mostrar_galeria_pokemon_paginada 
 import os
 import pandas as pd
+from torchvision.transforms.functional import to_pil_image
 
-
+from prod.models.utils import (
+    load_dataset,
+    load_model,
+    generate_by_neighbors_image
+)
 
 def main():
     st.set_page_config(page_title="Generador de Pokémon Aleatorios", page_icon="🧬")
@@ -50,8 +55,20 @@ def main():
 
     # Botón para generar
     if st.button("✨ Generar Pokémon ✨"):
+        pokemon_seleccionado = st.session_state.get("selected_pokemon")
+        if isinstance(pokemon_seleccionado, list):
+            pokemon_seleccionado = pokemon_seleccionado[0]  # Tomar solo el nombre
+
         if pokemon_seleccionado:
+
+            dataset = load_dataset()
+            model = load_model()
+
+            generated = generate_by_neighbors_image(model, dataset, pokemon_seleccionado, None, 2)
+            img_pil = to_pil_image(generated)
+
             st.success(f"¡Tu Pokémon generado a partir de {pokemon_seleccionado} está listo!")
+            st.image(img_pil, caption="Pokémon generado", use_container_width=True)
         else:
             st.warning("Por favor, seleccioná un Pokémon para comenzar.")
 
