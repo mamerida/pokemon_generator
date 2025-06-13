@@ -14,6 +14,7 @@ def main():
     st.set_page_config(page_title="Generador de Pokémon Aleatorios", page_icon="🧬")
     df = pd.read_csv("data/pokemon.csv")
     rows = df.to_dict(orient="records")
+    print("hola")
 
     # Título principal con ícono
     st.title("🧬 Generador de Pokémon Aleatorios")
