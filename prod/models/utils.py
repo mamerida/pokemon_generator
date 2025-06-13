@@ -124,7 +124,7 @@ class ConvVAE(nn.Module):
 
 def load_model():
     # Ruta local al archivo dentro del proyecto
-    checkpoint_path = "prod/models/vae_2000_epocs.pt"
+    checkpoint_path = "prod/models/vae_4000_epocs.pt"
 
     # Cargar el checkpoint
     checkpoint = torch.load(checkpoint_path, map_location='cpu')  # O 'cuda' si tenés GPU
