@@ -1,7 +1,7 @@
 import streamlit as st
 import os
 
-def mostrar_galeria_pokemon_paginada(images, page_number, images_per_page, images_per_row, pokemon_rows, lang_dict):
+def mostrar_galeria_pokemon_paginada(images, page_number, images_per_page, images_per_row, pokemon_rows, lang_dict, modo="generar"):
     total_pages = (len(images) - 1) // images_per_page
     start_idx = page_number * images_per_page
     end_idx = min(start_idx + images_per_page, len(images))
@@ -9,6 +9,14 @@ def mostrar_galeria_pokemon_paginada(images, page_number, images_per_page, image
 
     if "selected_pokemon" not in st.session_state:
         st.session_state["selected_pokemon"] = []
+
+    # 🧠 Definir máximo de selecciones permitidas según el modo
+    if modo in ["generar", "multiple"]:
+        max_selecciones = 1
+    elif modo == "interpolar":
+        max_selecciones = 2
+    else:
+        max_selecciones = 2  # Valor por defecto por si se llama mal
 
     with st.expander("Galería Pokémon (desplázate hacia abajo)", expanded=True):
         for i in range(0, len(images_to_show), images_per_row):
@@ -34,10 +42,8 @@ def mostrar_galeria_pokemon_paginada(images, page_number, images_per_page, image
                         if is_selected:
                             seleccionados.remove(name)
                         else:
-                            if len(seleccionados) < 2:
+                            if len(seleccionados) < max_selecciones:
                                 seleccionados.append(name)
-                            else:
-                                st.warning("Solo podés seleccionar hasta 2 Pokémon.")
                         st.session_state["selected_pokemon"] = seleccionados
                         st.rerun()
 
@@ -59,11 +65,7 @@ def mostrar_galeria_pokemon_paginada(images, page_number, images_per_page, image
     if seleccionados:
         st.success(f"{lang_dict['selected']}: {', '.join(seleccionados)}")
 
-
 def mostrar_tipos_pokemon(dataset, lang_dict, tipos, columnas_por_fila=4):
-    # Obtener tipos únicos
-    # tipos = sorted(list(set([label for _, label, _ in dataset])))
-    # tipos = sorted(list(set([str(label) for _, label, _ in dataset])))
 
     # Inicializar estado
     if "tipo_seleccionado" not in st.session_state:
