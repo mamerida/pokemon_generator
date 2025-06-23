@@ -1,4 +1,5 @@
 # Pokémon Generator
+![image](https://github.com/user-attachments/assets/0769e156-153e-45ad-ac5e-6d19d0776a4b)
 
 Generador automático de imágenes de Pokémon mediante un modelo **Variational Autoencoder (VAE)** convolucional implementado en PyTorch, entrenado con imágenes y tipos de Pokémon.  
 Este proyecto permite generar, explorar e interpolar nuevas imágenes de Pokémon directamente desde el espacio latente aprendido.
